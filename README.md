@@ -233,7 +233,7 @@ public interface SaleMinProjection {
 
 ## 👨‍💻 Autor
 
-**Seu Nome**
+Willian Bruno
 - GitHub: (https://github.com/Sinnisterr)
 - LinkedIn: (https://www.linkedin.com/in/willian-bruno-28924082/)
 
