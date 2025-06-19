@@ -36,7 +36,7 @@ public class SaleService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<SaleMinDTO> findSalesByDateRange(String minDate, String maxDate, String sellerName) {
+	public Page<SaleMinDTO> findSalesByDateRange(String minDate, String maxDate, String sellerName, Pageable pageable) {
 
 		LocalDate dataInicial;
 		LocalDate dataFinal;
@@ -60,17 +60,10 @@ public class SaleService {
 			dataFinal = LocalDate.parse(maxDate);
 		}
 
-		System.out.println("=== DEBUG DATAS ===");
-		System.out.println("Data inicial: " + dataInicial);
-		System.out.println("Data final: " + dataFinal);
-		System.out.println("==================");
-
 		String nomeVendedor = (sellerName == null || sellerName.trim().isEmpty()) ? "" : sellerName;
 
-		List<SaleMinProjection> projections = repository.findSalesByDateRange(dataInicial, dataFinal, nomeVendedor);
+		Page<SaleMinProjection> projections = repository.findSalesByDateRange(dataInicial, dataFinal, nomeVendedor, pageable);
 
-		return projections.stream()
-				.map(proj -> new SaleMinDTO(proj))
-				.toList();
+		return projections.map(proj -> new SaleMinDTO(proj));
 	}
 }

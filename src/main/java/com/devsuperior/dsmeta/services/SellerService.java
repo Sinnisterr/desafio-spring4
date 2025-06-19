@@ -5,6 +5,8 @@ import com.devsuperior.dsmeta.dto.projections.SaleMinProjection;
 import com.devsuperior.dsmeta.dto.projections.SellerMinProjection;
 import com.devsuperior.dsmeta.repositories.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -19,7 +21,7 @@ public class SellerService {
 @Autowired
 private SellerRepository sellerRepository;
 
-public List<SellerMinDTO> findSellerTotal(String minDate, String maxDate ) {
+public Page<SellerMinDTO>findSellerTotal(String minDate, String maxDate, Pageable pageable) {
 
     LocalDate dataInicial;
     LocalDate dataFinal;
@@ -41,9 +43,9 @@ public List<SellerMinDTO> findSellerTotal(String minDate, String maxDate ) {
     System.out.println("Data final: " + dataFinal);
     System.out.println("==================");
 
-            List<SellerMinProjection> projections = sellerRepository.findSellerTotal(dataInicial, dataFinal);
+            Page<SellerMinProjection> projections = sellerRepository.findSellerTotal(dataInicial, dataFinal, pageable);
 
-    return projections.stream().map(x -> new SellerMinDTO(x)).toList();
+    return projections.map(x -> new SellerMinDTO(x));
 }
 
 }

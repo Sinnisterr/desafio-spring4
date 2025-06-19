@@ -1,7 +1,6 @@
 package com.devsuperior.dsmeta.controllers;
 
 import com.devsuperior.dsmeta.dto.SellerMinDTO;
-import com.devsuperior.dsmeta.dto.projections.SellerMinProjection;
 import com.devsuperior.dsmeta.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,21 +24,23 @@ public class SaleController {
 	private SellerService sellerService;
 
 	@GetMapping(value = "/report")
-	public ResponseEntity<List<SaleMinDTO>> getReport(
+	public ResponseEntity<Page<SaleMinDTO>> getReport(
 			@RequestParam(value = "minDate", defaultValue = "") String minDate,
 			@RequestParam(value = "maxDate", defaultValue = "") String maxDate,
-			@RequestParam(value = "name", defaultValue = "") String sellerName) {
+			@RequestParam(value = "name", defaultValue = "") String sellerName,
+			Pageable pageable) {
 
-		List<SaleMinDTO> result = service.findSalesByDateRange(minDate, maxDate, sellerName);
+		Page<SaleMinDTO> result = service.findSalesByDateRange(minDate, maxDate, sellerName, pageable);
 		return ResponseEntity.ok(result);
 	}
 
 	@GetMapping(value = "/summary")
-	public ResponseEntity<List<SellerMinDTO>> getSumary(
+	public ResponseEntity<Page<SellerMinDTO>> getSumary(
 			@RequestParam(value = "minDate", defaultValue = "") String minDate,
-			@RequestParam(value = "maxDate", defaultValue = "") String maxDate) {
+			@RequestParam(value = "maxDate", defaultValue = "") String maxDate,
+			Pageable pageable) {
 
-		List<SellerMinDTO> result = sellerService.findSellerTotal(minDate, maxDate);
+		Page<SellerMinDTO> result = sellerService.findSellerTotal(minDate, maxDate, pageable);
 		return ResponseEntity.ok(result);
 
 	}
